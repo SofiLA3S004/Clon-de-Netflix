@@ -1,0 +1,138 @@
+/* Minimal, framework-free styles aimed at Netflix-like grid */
+:root{
+  --bg: linear-gradient(135deg, #000000, #4b0082); /* Degradado de negro a morado */
+  --panel: #1a1a1a;
+  --text: #f1f1f1;
+  --muted: #b3b3b3;
+  --accent: #e50914;
+}
+*{ box-sizing: border-box; }
+html, body, #app { height: 100%; }
+body{
+  background: linear-gradient(135deg, #000000, #4b0082); /* Fondo parejo */
+  background-size: cover; /* Ajusta el fondo para que no se vea cortado */
+  background-attachment: fixed; /* Asegura que el fondo se adapte al tamaño de la página */
+  min-height: 100vh; /* Garantiza que el fondo cubra toda la altura de la ventana */
+  margin: 0;
+  padding: 0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Apple Color Emoji','Segoe UI Emoji', 'Segoe UI Symbol'; color:var(--text); }
+a{ color:inherit; text-decoration: none; }
+.container{ max-width: 1200px; margin: 0 auto; padding: 1rem; }
+.header{
+  position: sticky; top: 0; z-index: 10; background: linear-gradient(180deg, rgba(0,0,0,0.6), transparent), var(--bg);
+  padding: 0.75rem 1rem; border-bottom: 1px solid #222;
+}
+.brand { display:flex; align-items:center; gap:.5rem; font-weight:800; letter-spacing: .5px; }
+.brand .dot{ width: 10px; height:10px; background: var(--accent); border-radius: 2px; display:inline-block }
+/* Cambios para adaptar el diseño gráfico */
+.searchbar {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  background: linear-gradient(180deg, #1a1a1a, #121212);
+  padding: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}
+.searchbar input {
+  flex: 1;
+  background: #2c2c2c;
+  border: 1px solid #444;
+  color: #e0e0e0;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  font-size: 1rem;
+}
+.searchbar button {
+  background: #00cc66;
+  border: none;
+  color: white;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+.searchbar button:hover {
+  background: #00994d;
+}
+.navbar {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.navbar button {
+  background: #2c2c2c;
+  border: none;
+  color: #e0e0e0;
+  padding: 0.8rem 1.2rem;
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 1rem;
+  transition: background 0.3s ease;
+}
+.navbar button.active {
+  background: #6a0dad;
+  color: white;
+}
+.navbar button:hover {
+  background: #444;
+}
+.grid{
+  display:grid; gap: .75rem; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); margin-top:1rem;
+}
+.card{
+  background: #111; border:1px solid #222; border-radius:.5rem; overflow:hidden; transition: transform .2s ease, box-shadow .2s ease;
+}
+.card:hover{ transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.4) }
+.card img{ width:100%; height:225px; object-fit:cover; display:block; background:#222 }
+.card .meta{ padding:.6rem .75rem; }
+.card .title{ font-size:.95rem; font-weight:700; line-height:1.2 }
+.card .year{ color:var(--muted); font-size:.85rem; margin-top:.15rem }
+.controls{ display:flex; gap:.5rem; align-items:center; margin-top: .5rem; color:var(--muted) }
+.card .controls {
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto; /* Asegura que los botones estén en la parte inferior */
+}
+.badge{ background:#222; border:1px solid #333; padding:.15rem .4rem; border-radius:.35rem; font-size:.75rem }
+.pagination{ display:flex; gap:.5rem; justify-content:center; padding:1rem 0; }
+.pagination button{
+  background:#151515; border:1px solid #2a2a2a; color:var(--text); padding:.5rem .8rem; border-radius:.4rem; cursor:pointer;
+}
+.pagination button[disabled]{ opacity:.4; cursor:not-allowed }
+.empty, .error{ text-align:center; color:var(--muted); padding: 2rem 0; }
+.footer{ padding:2rem 1rem; color:#8d8d8d; font-size:.9rem; border-top:1px solid #1f1f1f; margin-top:2rem; }
+.back, .card button {
+  background: #00994d; /* Verde oscuro */
+  border: none;
+  color: white;
+  padding: 0.6rem 1rem; /* Tamaño reducido */
+  border-radius: 0.8rem;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 0.9rem; /* Fuente más pequeña */
+  transition: background 0.3s ease;
+}
+.back:hover, .card button:hover {
+  background: #007a3d; /* Verde más oscuro al pasar el mouse */
+}
+.card button {
+  padding: 0.4rem 0.6rem; /* Tamaño reducido para los botones de agregar */
+  font-size: 0.7rem; /* Fuente más pequeña */
+}
+.logo {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
+  background-color: #003366; /* Azul oscuro */
+  color: white; /* Color blanco para la letra */
+  border-radius: 50%; /* Forma circular */
+  font-weight: bold;
+  font-size: 1rem;
+}

@@ -1,0 +1,27 @@
+{
+  "Search": [
+    {
+      "Title": "The Matrix",
+      "Year": "1999",
+      "imdbID": "tt0133093",
+      "Type": "movie",
+      "Poster": "N/A"
+    },
+    {
+      "Title": "The Matrix Reloaded",
+      "Year": "2003",
+      "imdbID": "tt0234215",
+      "Type": "movie",
+      "Poster": "N/A"
+    },
+    {
+      "Title": "The Matrix Revolutions",
+      "Year": "2003",
+      "imdbID": "tt0242653",
+      "Type": "movie",
+      "Poster": "N/A"
+    }
+  ],
+  "totalResults": "3",
+  "Response": "True"
+}
