@@ -1,78 +1,71 @@
 <template>
-  <div v-if="show" class="modal-overlay" @click="closeModal">
-    <div class="modal-content" @click.stop>
-      <iframe
-        v-if="trailerKey"
-        :src="`https://www.youtube.com/embed/${trailerKey}`"
-        frameborder="0"
-        allow="autoplay; encrypted-media"
-        allowfullscreen
-      ></iframe>
-      <p v-else>No trailer available.</p>
-    </div>
+  <div class="trailer-page">
+    <header class="header">
+      <div class="brand">
+        <span class="dot"></span>
+        <span>Mi App de Películas</span>
+      </div>
+    </header>
+
+    <main class="container">
+      <h1>{{ movieTitle }}</h1>
+      <div class="video-wrapper">
+        <iframe
+          v-if="trailerKey"
+          :src="`https://www.youtube.com/embed/${trailerKey}?autoplay=1`"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+        <p v-else>No hay trailer disponible.</p>
+      </div>
+
+      <button class="back" @click="$router.back()">⬅ Volver</button>
+    </main>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { useRoute } from 'vue-router'
+import { ref, onMounted } from 'vue'
+import { getTrailer } from '../services/omdbApi'
 
-const props = defineProps({
-  show: { type: Boolean, required: true },
-  trailerKey: { type: String, required: false },
-});
+const route = useRoute()
+const imdbID = route.params.id
+const movieTitle = route.query.title || "Trailer"
 
-const emit = defineEmits(['close']);
+const trailerKey = ref(null)
 
-function closeModal() {
-  emit('close');
-}
+onMounted(async () => {
+  trailerKey.value = await getTrailer(imdbID)
+})
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.8);
+.trailer-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #000000, #4b0082);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.video-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  margin: 1rem auto;
+  width: 100%;
+  max-width: 900px;
 }
-.modal-content {
-  background: #fff;
-  padding: 1rem;
-  border-radius: 8px;
-  max-width: 800px;
-  width: 90%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  animation: fadeIn 0.3s ease-in-out;
-}
+
 iframe {
   width: 100%;
-  height: 450px;
-  border-radius: 8px;
-}
+  height: 500px;
+  border-radius: 12px
 
-@media (max-width: 768px) {
-  iframe {
-    height: 300px;
-  }
-  .modal-content {
-    width: 95%;
-  }
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-</style>

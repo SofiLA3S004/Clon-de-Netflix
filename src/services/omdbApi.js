@@ -1,21 +1,15 @@
 const API_BASE = 'https://www.omdbapi.com/'
 const API_KEY = import.meta.env.VITE_OMDB_API_KEY
 
-async function request(params){
+async function request(params) {
   const url = new URL(API_BASE)
-  if(!API_KEY) throw new Error('Falta VITE_OMDB_API_KEY en tu .env')
+  if (!API_KEY) throw new Error('Falta VITE_OMDB_API_KEY en tu .env')
   url.search = new URLSearchParams({ apikey: API_KEY, ...params }).toString()
   const res = await fetch(url.toString())
-  if(!res.ok) throw new Error('HTTP ' + res.status)
+  if (!res.ok) throw new Error('HTTP ' + res.status)
   return await res.json()
 }
 
-/**
- * Busca por texto. OMDb entrega 10 por página.
- * @param {string} q
- * @param {number} page
- * @param {'movie'|'series'|'episode'} [type]
- */
 export async function searchMovies(q, page=1, type){
   if(!q || !q.trim()) return { Response:'False', Error:'Ingresa un término de búsqueda' }
   const params = { s: q.trim(), page: String(page) }
@@ -23,10 +17,6 @@ export async function searchMovies(q, page=1, type){
   return await request(params)
 }
 
-/**
- * Obtiene detalles por imdbID
- * @param {string} imdbID
- */
 export async function getMovieById(imdbID){
   return await request({ i: imdbID, plot: 'full' })
 }
@@ -55,17 +45,23 @@ export function getWatchLater() {
   return watchLater;
 }
 
+// Obtener trailer desde TMDB
 export async function getTrailer(imdbID) {
   try {
-    const response = await fetch(`https://api.themoviedb.org/3/movie/${imdbID}/videos`, {
-      headers: {
-        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmOGViNGIyNjU5ODMxNWFjYmNiZTBkMTBkNmM0MWZkNyIsIm5iZiI6MTc1ODA1MTk1My45NDQsInN1YiI6IjY4YzliZTcxMWNhMjNmYmNiMDIxOTY1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.DaxZs7WJMu9PJ7bgiHnhYiCCpJDvpezDvcy-ydFpENY'
+    const response = await fetch(
+      `https://api.themoviedb.org/3/movie/${imdbID}/videos`,
+      {
+        headers: {
+          Authorization: 'Bearer TU_TOKEN_TMDB'
+        }
       }
-    });
+    );
     const data = await response.json();
-    console.log('Trailer API Response:', data); // Depuración
-    const trailer = data.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
-    return trailer ? `https://www.youtube.com/embed/${trailer.key}` : null;
+    console.log('Trailer API Response:', data);
+    const trailer = data.results.find(
+      video => video.type === 'Trailer' && video.site === 'YouTube'
+    );
+    return trailer ? trailer.key : null; // solo la key
   } catch (error) {
     console.error('Error fetching trailer:', error);
     return null;
