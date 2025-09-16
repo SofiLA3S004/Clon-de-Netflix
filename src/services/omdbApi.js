@@ -54,3 +54,20 @@ export function addToWatchLater(movie) {
 export function getWatchLater() {
   return watchLater;
 }
+
+export async function getTrailer(imdbID) {
+  try {
+    const response = await fetch(`https://api.themoviedb.org/3/movie/${imdbID}/videos`, {
+      headers: {
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmOGViNGIyNjU5ODMxNWFjYmNiZTBkMTBkNmM0MWZkNyIsIm5iZiI6MTc1ODA1MTk1My45NDQsInN1YiI6IjY4YzliZTcxMWNhMjNmYmNiMDIxOTY1NSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.DaxZs7WJMu9PJ7bgiHnhYiCCpJDvpezDvcy-ydFpENY'
+      }
+    });
+    const data = await response.json();
+    console.log('Trailer API Response:', data); // Depuración
+    const trailer = data.results.find(video => video.type === 'Trailer' && video.site === 'YouTube');
+    return trailer ? `https://www.youtube.com/embed/${trailer.key}` : null;
+  } catch (error) {
+    console.error('Error fetching trailer:', error);
+    return null;
+  }
+}
